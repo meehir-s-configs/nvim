@@ -16,32 +16,20 @@ return {
                     -- [Magic] Auto-Include (<leader>ai)
                     -- Finds and applies "Add include" or "Import" actions instantly
                     vim.keymap.set('n', '<leader>ai', function()
-                        -- FIX: Get the client (like clangd) to find its encoding
-                        local client = vim.lsp.get_client_by_id(ev.data.client_id)
-                        local encoding = client and client.offset_encoding or "utf-16"
+                        vim.lsp.buf.code_action({
+                            -- 1. Tell Neovim to apply the fix automatically if it finds one
+                            apply = true,
 
-                        -- Pass the encoding to make_range_params to fix the error
-                        local params = vim.lsp.util.make_range_params(0, encoding)
-
-                        params.context = { diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line('.') - 1 }) }
-
-                        vim.lsp.buf_request(0, 'textDocument/codeAction', params, function(err, actions, context)
-                            if err or not actions or next(actions) == nil then return end
-
-                            for _, action in pairs(actions) do
+                            -- 2. Filter: Only show actions that look like imports/includes
+                            --    This prevents it from trying to trigger other random fixes.
+                            filter = function(action)
                                 local title = action.title:lower()
-                                if title:match("add include") or title:match("import") then
-                                    if action.edit then
-                                        vim.lsp.util.apply_workspace_edit(action.edit, encoding) -- Use encoding here too
-                                    elseif action.command then
-                                        vim.lsp.buf.execute_command(action.command)
-                                    end
-                                    vim.notify("Auto-Fixed: " .. action.title, vim.log.levels.INFO)
-                                    return
-                                end
-                            end
-                            vim.notify("No header fix found", vim.log.levels.WARN)
-                        end)
+                                return title:match("add include") or title:match("import") or title:match("include <")
+                            end,
+
+                            -- 3. Context: Limit to "quickfix" only (optional, but faster for clangd)
+                            context = { only = { "quickfix" } }
+                        })
                     end, { buffer = ev.buf, desc = "Auto Include Header" })
                 end,
             })
@@ -49,10 +37,10 @@ return {
             -- =========================================================
             -- 1. Configure Servers (Define the config first)
             -- =========================================================
-            
+
             -- Clangd
             vim.lsp.config.clangd = {}
-            
+
             -- Lua LS
             vim.lsp.config.lua_ls = {
                 on_init = function(client)
