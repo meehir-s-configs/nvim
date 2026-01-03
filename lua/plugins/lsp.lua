@@ -65,7 +65,7 @@ return {
             -- The plugin 'nvim-lspconfig' automatically populates the defaults.
             -- You just need to enable them.
 
-            local servers = { "clangd", "lua_ls", "rust_analyzer", "pyright", "jdtls", "gopls", "ts_ls" }
+            local servers = { "clangd", "lua_ls", "rust_analyzer", "basedpyright", "jdtls", "gopls", "ts_ls" }
             for _, server in ipairs(servers) do
                 vim.lsp.enable(server)
             end
