@@ -27,7 +27,7 @@ return {
             -- 1. Configure Overrides
             -- =========================================================
 
-            -- Lua LS: Override default settings
+            -- Lua LS
             vim.lsp.config('lua_ls', {
                 on_init = function(client)
                     if client.workspace_folders then
@@ -56,7 +56,7 @@ return {
                 }
             })
 
-            -- Clangd:
+            -- Clangd
             -- vim.lsp.config('clangd', { cmd = { "clangd", "--background-index" } })
 
             -- =========================================================
