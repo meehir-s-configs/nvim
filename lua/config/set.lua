@@ -21,6 +21,49 @@ vim.opt.termguicolors = true
 vim.opt.updatetime = 50
 
 -- ============================
+-- Folding logic
+-- ============================
+
+-- Use Treesitter for folding
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+
+-- Keep folds open by default when opening a file
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client and client.supports_method("textDocument/foldingRange") then
+            vim.wo.foldmethod = "expr"
+            vim.wo.foldexpr = "v:lua.vim.lsp.foldexpr()"
+        end
+    end,
+})
+
+-- clean fold view
+function _G.FormatFold()
+    local fStart = vim.v.foldstart
+    local fEnd = vim.v.foldend
+    local lCount = fEnd - fStart + 1
+    local tLine = vim.fn.getline(fStart)
+
+    return tLine .. " ⋯ [" .. lCount .. " lines]"
+end
+
+vim.opt.foldtext = "v:lua.FormatFold()"
+
+-- add clickable folding icon and replace the view of them with nerd font arrows
+vim.opt.foldcolumn = "1"
+vim.opt.fillchars = {
+    fold = " ",
+    foldopen = "",
+    foldsep = " ",
+    foldclose = "",
+}
+
+-- ============================
 -- 2. Colorscheme Logic (NEW)
 -- ============================
 
