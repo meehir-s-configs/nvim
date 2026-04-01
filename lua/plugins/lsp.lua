@@ -69,7 +69,7 @@ return {
                 cmd = { "qmlls6" },
             })
 
-            local servers = { "clangd", "lua_ls", "rust_analyzer", "basedpyright", "jdtls", "gopls", "ts_ls", "qmlls" }
+            local servers = { "clangd", "lua_ls", "rust_analyzer", "basedpyright", "gopls", "ts_ls", "qmlls" } -- for jdtls its setup seperately in nvim-jdtls.lua
             for _, server in ipairs(servers) do
                 vim.lsp.enable(server)
             end
