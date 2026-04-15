@@ -10,6 +10,7 @@ return {
                 callback = function(ev)
                     local opts = { buffer = ev.buf }
                     vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+                    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
                     vim.keymap.set('n', '<leader>ai', function()
                         vim.lsp.buf.code_action({
                             apply = true,
