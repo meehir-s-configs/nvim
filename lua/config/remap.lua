@@ -14,4 +14,5 @@ end, { desc = 'Hover Documentation' })]]
 --Error Diagnostics
 vim.api.nvim_set_keymap('n', '<leader>d', ':lua vim.diagnostic.open_float()<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n','[d',':lua vim.diagnostic.goto_prev()<CR>',{noremap=true, silent = true})
-vim.api.nvim_set_keymap('n',']d',':lua vim.diagnostic.goto_next()<CR>',{noremap=true, silent = true})
+vim.api.nvim_set_keymap('n',']d',':lua vim.diagnostic.jump()<CR>',{noremap=true, silent = true})
+
