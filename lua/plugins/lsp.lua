@@ -70,7 +70,11 @@ return {
                 cmd = { "qmlls6" },
             })
 
-            local servers = { "clangd", "lua_ls", "rust_analyzer", "basedpyright", "gopls", "ts_ls", "qmlls", "superhtml", "cssls", "emmet_language_server"} -- for jdtls its setup seperately in nvim-jdtls.lua
+            vim.lsp.config('kotlin_language_server', {
+                cmd = { "env", "JAVA_HOME=/usr/lib/jvm/java-11-openjdk/", "kotlin-language-server"}
+            })
+
+            local servers = { "clangd", "lua_ls", "rust_analyzer", "basedpyright", "gopls", "ts_ls", "qmlls", "superhtml", "cssls", "emmet_language_server", "kotlin_language_server"} -- for jdtls its setup seperately in nvim-jdtls.lua
             for _, server in ipairs(servers) do
                 vim.lsp.enable(server)
             end
