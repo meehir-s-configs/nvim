@@ -26,6 +26,9 @@ return {
                     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
                     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
                     vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, opts)
+                    vim.keymap.set({ 'n', 'v' }, '<leader>f', function()
+                        vim.lsp.buf.format({ async = true })
+                    end, { buffer = ev.buf, desc = "LSP Format" })
                 end,
             })
 
