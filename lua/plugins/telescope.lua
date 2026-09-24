@@ -1,25 +1,31 @@
 return {
-    'nvim-telescope/telescope.nvim', tag = '0.1.8',
-    -- or                              , branch = '0.1.x',
+    'nvim-telescope/telescope.nvim',
+    branch = 'master',
     dependencies = { 'nvim-lua/plenary.nvim' },
 
     config = function()
-	    require('telescope').setup({})
+        require('telescope').setup({})
 
-	    local builtin = require('telescope.builtin')
-	    vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
-	    vim.keymap.set('n', '<C-p>', builtin.git_files, {})
-	    vim.keymap.set('n', '<leader>pws', function()
-		    local word = vim.fn.expand("<cword>")
-		    builtin.grep_string({ search = word })
-	    end)
-	    vim.keymap.set('n', '<leader>pWs', function()
-		    local word = vim.fn.expand("<cWORD>")
-		    builtin.grep_string({ search = word })
-	    end)
-	    vim.keymap.set('n', '<leader>ps', function()
-		    builtin.grep_string({ search = vim.fn.input("Grep > ") })
-	    end)
-	    vim.keymap.set('n', '<leader>vh', builtin.help_tags, {})
+        local telescope_builtins = require('telescope.builtin')
+
+        vim.keymap.set('n', '<leader>pf', telescope_builtins.find_files, {})
+        vim.keymap.set('n', '<C-p>', telescope_builtins.git_files, {})
+
+        vim.keymap.set('n', '<leader>pws', function()
+            local current_word = vim.fn.expand("<cword>")
+            telescope_builtins.grep_string({ search = current_word })
+        end)
+
+        vim.keymap.set('n', '<leader>pWs', function()
+            local current_bigword = vim.fn.expand("<cWORD>")
+            telescope_builtins.grep_string({ search = current_bigword })
+        end)
+
+        vim.keymap.set('n', '<leader>ps', function()
+            local search_query = vim.fn.input("Grep > ")
+            telescope_builtins.grep_string({ search = search_query })
+        end)
+
+        vim.keymap.set('n', '<leader>vh', telescope_builtins.help_tags, {})
     end
-    }
+}
