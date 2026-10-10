@@ -41,7 +41,7 @@ return {
                 on_init = function(client)
                     if client.workspace_folders then
                         local path = client.workspace_folders[1].name
-                        if path ~= vim.fn.stdpath('config') and (vim.uv.fs_stat(path..'/.luarc.json') or vim.uv.fs_stat(path..'/.luarc.jsonc')) then
+                        if path ~= vim.fn.stdpath('config') and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')) then
                             return
                         end
                     end
@@ -66,17 +66,27 @@ return {
             })
 
             -- Clangd
-            -- vim.lsp.config('clangd', { cmd = { "clangd", "--background-index" } })
+            vim.lsp.config('clangd', {
+                cmd = {
+                    'clangd',
+                    '--background-index',
+                    '--query-driver=' .. vim.env.HOME
+                    .. '/.platformio/packages/toolchain-xtensa-esp32s3/bin/xtensa-esp32s3-elf-*',
+                },
+            })
 
+            -- QML
             vim.lsp.config('qmlls', {
                 cmd = { "qmlls6" },
             })
 
+            -- Kotlin
             vim.lsp.config('kotlin_language_server', {
-                cmd = { "env", "JAVA_HOME=/usr/lib/jvm/java-11-openjdk/", "kotlin-language-server"}
+                cmd = { "env", "JAVA_HOME=/usr/lib/jvm/java-11-openjdk/", "kotlin-language-server" }
             })
 
-            local servers = { "clangd", "lua_ls", "rust_analyzer", "basedpyright", "gopls", "ts_ls", "qmlls", "superhtml", "cssls", "emmet_language_server", "kotlin_language_server"} -- for jdtls its setup seperately in nvim-jdtls.lua
+            local servers = { "clangd", "lua_ls", "rust_analyzer", "basedpyright", "gopls", "ts_ls", "qmlls", "superhtml",
+                "cssls", "emmet_language_server", "kotlin_language_server" } -- for jdtls its setup seperately in nvim-jdtls.lua
             for _, server in ipairs(servers) do
                 vim.lsp.enable(server)
             end
