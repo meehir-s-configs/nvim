@@ -33,7 +33,7 @@ return {
             })
 
             -- =========================================================
-            -- 1. Configure Overrides
+            -- 1. LSP configuration
             -- =========================================================
 
             -- Lua LS
@@ -67,12 +67,6 @@ return {
 
             -- Clangd
             -- vim.lsp.config('clangd', { cmd = { "clangd", "--background-index" } })
-
-            -- =========================================================
-            -- 2. Enable Servers
-            -- =========================================================
-            -- The plugin 'nvim-lspconfig' automatically populates the defaults.
-            -- You just need to enable them.
 
             vim.lsp.config('qmlls', {
                 cmd = { "qmlls6" },
